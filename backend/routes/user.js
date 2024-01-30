@@ -4,6 +4,7 @@ const User = require("../models/user.models");
 const jwt = require("jsonwebtoken");
 const { z } = require("zod");
 const authMiddleware = require("../middlewares/authMiddleware");
+const Account = require("../models/accounts.models");
 
 const signUpSchema = z.object({
   username: z.string().email(),
@@ -43,6 +44,14 @@ router.post("/signup", async (req, res) => {
   }
 
   const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET);
+
+  const randomBalance = Math.floor(Math.random() * 10000) + 1;
+
+  await Account.create({
+    user: newUser._id,
+    balance: randomBalance,
+  });
+
   res.status(201).json({ message: "User created successfully", token });
 });
 
