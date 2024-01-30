@@ -3,6 +3,7 @@ const router = require("express").Router();
 const User = require("../models/user.models");
 const jwt = require("jsonwebtoken");
 const { z } = require("zod");
+const authMiddleware = require("../middlewares/authMiddleware");
 
 const signUpSchema = z.object({
   username: z.string().email(),
@@ -12,6 +13,11 @@ const signUpSchema = z.object({
 });
 const signInSchema = z.object({
   username: z.string().email(),
+  password: z.string(),
+});
+const updateUserSchema = z.object({
+  firstName: z.string(),
+  lastName: z.string(),
   password: z.string(),
 });
 
@@ -59,6 +65,28 @@ router.post("/signin", async (req, res) => {
   const token = jwt.sign({ userId: userExists._id }, process.env.JWT_SECRET);
 
   res.status(200).json({ token });
+});
+
+// Method: PUT
+// Route: /api/v1/user
+
+router.put("/", authMiddleware, async (req, res) => {
+  const newUserDetails = req.body;
+  const validateNewUserDetails = updateUserSchema.safeParse(newUserDetails);
+  if (!validateNewUserDetails.success) {
+    return res.status(404).json({ message: "Invalid credentials" });
+  }
+
+  const updatedUser = await User.findOneAndUpdate(
+    { _id: req.userId },
+    newUserDetails
+  );
+
+  if (!updatedUser) {
+    return res.status(404).json({ message: "couldn't update user details" });
+  }
+
+  res.status(200).json({ message: "User details updated successfully" });
 });
 
 module.exports = router;
