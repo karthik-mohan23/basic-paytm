@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+const mongoose = require("mongoose");
 
 const rootRouter = require("./routes/index");
 
@@ -16,7 +17,7 @@ app.use("/api/v1", rootRouter);
       console.log("Server is listening at " + process.env.PORT);
     });
   } catch (error) {
-    console.console.log("Something went wrong!!!");
+    console.log("Something went wrong!!!");
     console.error(error);
   }
 })();

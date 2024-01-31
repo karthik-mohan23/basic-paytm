@@ -47,10 +47,14 @@ router.post("/signup", async (req, res) => {
 
   const randomBalance = Math.floor(Math.random() * 10000) + 1;
 
-  await Account.create({
+  const accountExists = await Account.create({
     user: newUser._id,
     balance: randomBalance,
   });
+
+  if (!accountExists) {
+    return res.status(404).json({ message: "Failed to create account " });
+  }
 
   res.status(201).json({ message: "User created successfully", token });
 });
