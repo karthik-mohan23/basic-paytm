@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const SignIn = () => {
   return (
-    <div className="bg-gray-500 min-h-screen flex items-center justify-center bg-opacity-50">
+    <div className="bg-gray-700 min-h-screen flex items-center justify-center bg-opacity-50">
       <div className="max-w-[430px] mx-auto bg-white rounded-lg">
         <div className="p-10">
           {/* Heading */}
