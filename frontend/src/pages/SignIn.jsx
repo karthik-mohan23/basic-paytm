@@ -1,4 +1,4 @@
 const SignIn = () => {
-  return <div className="text-5xl">SignIn</div>;
+  return <div>SignIn</div>;
 };
 export default SignIn;
