@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const SignUp = () => {
   return (
     <div className="bg-gray-500 min-h-screen flex items-center justify-center bg-opacity-50">
-      <div className="max-w-[450px] mx-auto bg-white rounded-lg">
+      <div className="max-w-[430px] mx-auto bg-white rounded-lg">
         <div className="p-10">
           {/* Heading */}
           <FormHeading
