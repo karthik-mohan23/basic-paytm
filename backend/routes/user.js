@@ -106,7 +106,7 @@ router.put("/", authMiddleware, async (req, res) => {
 // Route: /api/v1/user/bulk
 // Query Parameter: ?filter=harkirat
 
-router.get("/bulk", async (req, res) => {
+router.get("/bulk", authMiddleware, async (req, res) => {
   const { filter } = req.query;
   const querySchema = z.string();
   const validateQuery = querySchema.safeParse(filter);
@@ -114,9 +114,14 @@ router.get("/bulk", async (req, res) => {
     return res.status(404).json({ message: "Invalid search" });
   }
 
+  // const userToSendMoney = await User.find({
+  //   $or: [{ firstName: { $regex: filter } }, { lastName: { $regex: filter } }],
+  // }).select("-password ");
+  const currentUser = req.userId;
   const userToSendMoney = await User.find({
+    _id: { $ne: currentUser }, // Exclude the current user
     $or: [{ firstName: { $regex: filter } }, { lastName: { $regex: filter } }],
-  }).select("-password ");
+  }).select("-password");
 
   if (!userToSendMoney) {
     return res.status(404).json({ message: "No user found" });
